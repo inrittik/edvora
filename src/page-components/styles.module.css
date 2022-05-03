@@ -1,0 +1,55 @@
+.header {
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  max-height: 10rem;
+  padding: 1.4rem 2rem;
+  background-color: #101010;
+}
+.title {
+  font-family: Roboto;
+  font-weight: 700;
+  font-size: 36px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.profile {
+  display: flex;
+  font-family: Inter;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+}
+.profile span {
+  margin: auto 1rem;
+}
+.profile img {
+  width: 3rem;
+  border-radius: 50%;
+  margin: 0 1rem;
+}
+.body {
+  min-height: 100vh;
+  background: rgb(37, 37, 37);
+}
+.toggler {
+  padding: 1rem;
+}
+.toggler ul {
+  list-style: none;
+}
+.toggler li {
+  display: inline-block;
+  padding: 1rem 1rem;
+  margin: 0 1rem;
+  font-family: Inter;
+  font-weight: 400;
+  color: rgba(208, 203, 203, 1);
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+  /* border-bottom: 2px solid white; */
+}
+.toggler .active {
+  color: white;
+  font-weight: 700;
+  border-bottom: 2px solid white;
+}
