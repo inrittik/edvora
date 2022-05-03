@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import RideCard from "../../components/RideCard";
 import styles from "./styles.module.css";
 
 const Dashboard = () => {
@@ -34,7 +35,14 @@ const Dashboard = () => {
               Past Rides
             </li>
           </ul>
+
+          <span className={styles.filter}>
+            <span>Filters</span>
+          </span>
         </div>
+        <RideCard />
+        <RideCard />
+        <RideCard />
       </div>
     </>
   );

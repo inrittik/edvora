@@ -36,6 +36,8 @@
 }
 .toggler ul {
   list-style: none;
+  display: inline-block;
+  width: 90%;
 }
 .toggler li {
   display: inline-block;
@@ -52,4 +54,12 @@
   color: white;
   font-weight: 700;
   border-bottom: 2px solid white;
+}
+.filter {
+  color: white;
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 16px;
+  text-align: right;
+  width: 4rem;
 }

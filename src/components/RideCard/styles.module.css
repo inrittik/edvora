@@ -1,0 +1,43 @@
+.container {
+  background: #171717;
+  color: white;
+  border-radius: 10px;
+  width: 90%;
+  margin: 1rem auto;
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.container .image {
+  margin: auto 1rem;
+  position: relative;
+  left: -4rem;
+}
+.container .image img {
+  border-radius: 5px;
+  height: 80%;
+}
+.details ul {
+  list-style: none;
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 18px;
+  position: relative;
+  left: -5rem;
+}
+.details li {
+  color: #cfcfcf;
+  margin: 0.7rem;
+}
+.details li span {
+  color: white;
+}
+.place {
+  align-self: flex-start;
+  margin: 3rem -5rem;
+  background-color: black;
+  border-radius: 5px;
+  padding: 5px;
+  font-family: Inter;
+}
