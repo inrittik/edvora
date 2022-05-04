@@ -1,10 +1,8 @@
-import { useEffect } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Dashboard from "../src/page-components/Dashboard";
 
 export default function Home({ rides, user }) {
-  // console.log(rides);
   return (
     <div className={styles.container}>
       <Head>
@@ -24,17 +22,21 @@ export async function getServerSideProps() {
   res = await fetch(`https://assessment.api.vweb.app/user`);
   const userDetails = await res.json();
 
+  // add origin_station_code & destination_station_code to station_path for each ride
   data.forEach((detail) => {
     detail.station_path.push(detail.destination_station_code);
     detail.station_path.unshift(detail.origin_station_code);
   });
 
+  // calculating min distance of each ride from the user
   data.forEach((rides) => {
     let min = userDetails.station_code;
     rides.station_path.forEach((ride) => {
+      // min dist -> min absolute value of station_no - user_station_no
       min = Math.min(Math.abs(ride - userDetails.station_code), min);
     });
-    rides["distance"] = min;
+    rides["distance"] = min; // adding property to object
   });
+
   return { props: { rides: data, user: userDetails } };
 }
