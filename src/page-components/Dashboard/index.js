@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RideCard from "../../components/RideCard";
 import styles from "./styles.module.css";
 
 const Dashboard = ({ rides, user }) => {
-  // console.log(rides);
+  rides.sort((a, b) => {
+    return a.distance > b.distance ? 1 : -1;
+  });
   const [active, setActive] = useState(0);
   return (
     <>

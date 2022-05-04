@@ -2,8 +2,6 @@ import React from "react";
 import styles from "./styles.module.css";
 
 const index = ({ props }) => {
-  // let path = [...props.station_path];
-  // console.log(path);
   return (
     <div className={styles.container}>
       <div className={styles.image}>
@@ -24,10 +22,7 @@ const index = ({ props }) => {
             Date: <span>{props.date}</span>
           </li>
           <li>
-            Distance:{" "}
-            <span>
-              {props.destination_station_code - props.origin_station_code}
-            </span>
+            Distance: <span>{props.distance}</span>
           </li>
         </ul>
       </div>

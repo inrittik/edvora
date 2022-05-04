@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Dashboard from "../src/page-components/Dashboard";
@@ -21,6 +22,19 @@ export async function getServerSideProps() {
   const data = await res.json();
 
   res = await fetch(`https://assessment.api.vweb.app/user`);
-  const details = await res.json();
-  return { props: { rides: data, user: details } };
+  const userDetails = await res.json();
+
+  data.forEach((detail) => {
+    detail.station_path.push(detail.destination_station_code);
+    detail.station_path.unshift(detail.origin_station_code);
+  });
+
+  data.forEach((rides) => {
+    let min = userDetails.station_code;
+    rides.station_path.forEach((ride) => {
+      min = Math.min(Math.abs(ride - userDetails.station_code), min);
+    });
+    rides["distance"] = min;
+  });
+  return { props: { rides: data, user: userDetails } };
 }
