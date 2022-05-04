@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import RideCard from "../../components/RideCard";
 import styles from "./styles.module.css";
 
-const Dashboard = () => {
+const Dashboard = ({ rides, user }) => {
+  // console.log(rides);
   const [active, setActive] = useState(0);
   return (
     <>
       <header className={styles.header}>
         <span className={styles.title}>Edvora</span>
         <div className={styles.profile}>
-          <span>Dhruv Singh</span>
-          <img src="/Nrittik.jpg" alt="" />
+          <span>{user.name}</span>
+          <img src={user.url} alt="" />
         </div>
       </header>
       <div className={styles.body}>
@@ -40,9 +41,12 @@ const Dashboard = () => {
             <span>Filters</span>
           </span>
         </div>
+        {rides.map((ride, index) => {
+          return <RideCard props={ride} key={index} />;
+        })}
+        {/* <RideCard />
         <RideCard />
-        <RideCard />
-        <RideCard />
+        <RideCard /> */}
       </div>
     </>
   );

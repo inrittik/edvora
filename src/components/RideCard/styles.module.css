@@ -18,6 +18,9 @@
   border-radius: 5px;
   height: 80%;
 }
+.details {
+  width: 20rem;
+}
 .details ul {
   list-style: none;
   font-family: Inter;
@@ -28,7 +31,7 @@
 }
 .details li {
   color: #cfcfcf;
-  margin: 0.7rem;
+  margin: 0.7rem 0;
 }
 .details li span {
   color: white;
@@ -40,4 +43,6 @@
   border-radius: 5px;
   padding: 5px;
   font-family: Inter;
+  width: 10rem;
+  text-align: center;
 }

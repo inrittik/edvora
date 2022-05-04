@@ -1,35 +1,51 @@
 import React from "react";
 import styles from "./styles.module.css";
 
-const index = () => {
+const index = ({ props }) => {
+  // let path = [...props.station_path];
+  // console.log(path);
   return (
     <div className={styles.container}>
       <div className={styles.image}>
-        <img src="https://picsum.photos/200" alt="" />
+        <img src={props.map_url} alt="" />
       </div>
       <div className={styles.details}>
         <ul>
           <li>
-            Ride Id: <span>002</span>
+            Ride Id: <span>{props.id}</span>
           </li>
           <li>
-            Origin Station: <span>20</span>
+            Origin Station: <span>{props.origin_station_code}</span>
           </li>
           <li>
-            station_path: <span>[20, 39, 40, 42, 54, 63, 72, 88, 98]</span>
+            station_path: <span>{`[${props.station_path}]`}</span>
           </li>
           <li>
-            Date: <span>15th Feb 2022 16:33</span>
+            Date: <span>{props.date}</span>
           </li>
           <li>
-            Distance: <span>0</span>
+            Distance:{" "}
+            <span>
+              {props.destination_station_code - props.origin_station_code}
+            </span>
           </li>
         </ul>
       </div>
-      <div className={styles.place}>City Name</div>
-      <div className={styles.place}>State Name</div>
+      <div className={styles.place}>{props.city}</div>
+      <div className={styles.place}>{props.state}</div>
     </div>
   );
+};
+
+index.defaultProps = {
+  map_url: "https://picsum.photos/200",
+  id: 1,
+  origin_station_code: 20,
+  station_path: [20, 22, 30, 40, 50, 61, 72],
+  date: "22",
+  destination_station_code: 80,
+  city: "Guwahati",
+  state: "Assam",
 };
 
 export default index;
