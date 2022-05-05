@@ -64,5 +64,17 @@
   width: 4rem;
   cursor: pointer;
 }
-.activeFilter {
+.filterActive {
+  display: inline-block;
+  width: 12rem;
+  height: 10rem;
+  background-color: black;
+  border-radius: 5px;
+  position: absolute;
+  right: 5rem;
+  top: 10rem;
+  z-index: 2;
+}
+.filterInactive {
+  display: none;
 }

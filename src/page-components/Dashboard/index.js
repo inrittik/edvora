@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RideCard from "../../components/RideCard";
 import styles from "./styles.module.css";
 
@@ -6,6 +6,7 @@ import styles from "./styles.module.css";
 let timeTo = new Date(2022, 3, 25, 0, 0, 0, 0);
 let timeLimit = Math.floor(timeTo / 1000);
 
+// main functional component
 const Dashboard = ({ rides, user }) => {
   // sorts the array of rides based on distance from the user's location
   rides.sort((a, b) => {
@@ -34,8 +35,8 @@ const Dashboard = ({ rides, user }) => {
 
   // state to manage active section i.e nearest(0)/upcoming(1)/past(2)
   const [activeSection, setActiveSection] = useState(0);
-  // const [activeCity, setActiveCity] = useState(null);
-  // const [activeState, setActiveState] = useState(null);
+  const [activeCity, setActiveCity] = useState(null);
+  const [activeState, setActiveState] = useState(null);
   const [activeFilter, setActiveFilter] = useState(false);
 
   let array = rides;
@@ -46,6 +47,32 @@ const Dashboard = ({ rides, user }) => {
   } else if (activeSection === 2) {
     array = pastRides;
   }
+
+  // filters
+  // filter for state list
+  let states = [];
+  rides.forEach((ride) => {
+    states.push(ride.state);
+  });
+  const uniqueStates = [...new Set(states)];
+  uniqueStates.sort();
+
+  // list of cities from a particular state
+  let cities = [];
+  const filterCities = (state) => {
+    let ridesFromState = rides.filter((ride) => {
+      return ride.state === state;
+    });
+    ridesFromState.forEach((ride) => {
+      cities.push(ride.city);
+    });
+    cities.sort();
+    const removeDuplicates = (arr) => {
+      return arr.filter((item, index) => arr.indexOf(item) === index);
+    };
+    removeDuplicates(cities);
+  };
+
   return (
     <>
       <header className={styles.header}>
@@ -78,11 +105,34 @@ const Dashboard = ({ rides, user }) => {
             </li>
           </ul>
 
-          <span className={styles.filter} onClick={() => setActiveFilter(true)}>
+          <span
+            className={styles.filter}
+            onClick={() => setActiveFilter(!activeFilter)}
+          >
             <span>Filters</span>
-            <form className={styles.filterActive}>
-              <label htmlFor="city">City</label>
-              <input type="radio" />
+            <form
+              className={
+                activeFilter ? styles.filterActive : styles.filterInactive
+              }
+            >
+              <div>Filter</div>
+              {uniqueStates.map((state, index) => {
+                return (
+                  <div onClick={() => setActiveState(state)} key={index}>
+                    {state}
+                  </div>
+                );
+              })}
+              {activeState !== null ? filterCities(activeState) : null}
+              {activeState !== null
+                ? cities.map((city, index) => {
+                    return (
+                      <div onClick={() => setActiveCity(city)} key={index}>
+                        {city}
+                      </div>
+                    );
+                  })
+                : null}
             </form>
           </span>
         </div>
