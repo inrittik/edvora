@@ -38,15 +38,9 @@ const Dashboard = ({ rides, user }) => {
   const [activeCity, setActiveCity] = useState(null);
   const [activeState, setActiveState] = useState(null);
   const [activeFilter, setActiveFilter] = useState(false);
-
-  let array = rides;
-  if (activeSection === 0) {
-    array = rides;
-  } else if (activeSection === 1) {
-    array = upcomingRides;
-  } else if (activeSection === 2) {
-    array = pastRides;
-  }
+  const [stateToggle, setStateToggle] = useState(false);
+  const [cityToggle, setCityToggle] = useState(false);
+  const [activeArray, setActiveArray] = useState([...rides]);
 
   // filters
   // filter for state list
@@ -73,6 +67,21 @@ const Dashboard = ({ rides, user }) => {
     removeDuplicates(cities);
   };
 
+  // filtering of array of rides based on state abd city
+  useEffect(() => {
+    if (activeState === null && activeCity === null) {
+      setActiveArray(rides);
+      return;
+    }
+    const filteredArray = rides.filter((ride) => {
+      if (activeCity === null) {
+        return ride.state === activeState;
+      } else {
+        return ride.state === activeState && ride.city === activeCity;
+      }
+    });
+    setActiveArray(filteredArray);
+  }, [activeState, activeCity]);
   return (
     <>
       <header className={styles.header}>
@@ -87,57 +96,100 @@ const Dashboard = ({ rides, user }) => {
           <ul>
             <li
               className={activeSection === 0 ? styles.active : ""}
-              onClick={() => setActiveSection(0)}
+              onClick={() => {
+                setActiveSection(0);
+                setActiveArray(rides);
+              }}
             >
               Nearest Rides
             </li>
             <li
               className={activeSection === 1 ? styles.active : ""}
-              onClick={() => setActiveSection(1)}
+              onClick={() => {
+                setActiveSection(1);
+                setActiveArray(upcomingRides);
+              }}
             >
               Upcoming Rides({upcomingRides.length})
             </li>
             <li
               className={activeSection === 2 ? styles.active : ""}
-              onClick={() => setActiveSection(2)}
+              onClick={() => {
+                setActiveSection(2);
+                setActiveArray(pastRides);
+              }}
             >
               Past Rides({pastRides.length})
             </li>
           </ul>
 
-          <span
-            className={styles.filter}
-            onClick={() => setActiveFilter(!activeFilter)}
-          >
-            <span>Filters</span>
+          <span className={styles.filter}>
+            <span onClick={() => setActiveFilter(!activeFilter)}>Filters</span>
             <form
               className={
                 activeFilter ? styles.filterActive : styles.filterInactive
               }
             >
-              <div>Filter</div>
-              {uniqueStates.map((state, index) => {
-                return (
-                  <div onClick={() => setActiveState(state)} key={index}>
-                    {state}
-                  </div>
-                );
-              })}
+              <div className={styles.label}>Filter</div>
+              <div
+                className={styles.label}
+                onClick={() => setStateToggle(!stateToggle)}
+              >
+                State
+              </div>
+              <div
+                className={
+                  stateToggle ? styles.listActive : styles.listInactive
+                }
+              >
+                {uniqueStates.map((state, index) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        setActiveState(state);
+                        setActiveCity(null);
+                        setStateToggle(false);
+                      }}
+                      key={index}
+                      className={styles.listItem}
+                    >
+                      {state}
+                    </div>
+                  );
+                })}
+              </div>
               {activeState !== null ? filterCities(activeState) : null}
-              {activeState !== null
-                ? cities.map((city, index) => {
-                    return (
-                      <div onClick={() => setActiveCity(city)} key={index}>
-                        {city}
-                      </div>
-                    );
-                  })
-                : null}
+              <div
+                className={styles.label}
+                onClick={() => setCityToggle(!cityToggle)}
+              >
+                City
+              </div>
+              <div
+                className={cityToggle ? styles.listActive : styles.listInactive}
+              >
+                {activeState !== null
+                  ? cities.map((city, index) => {
+                      return (
+                        <div
+                          onClick={() => {
+                            setActiveCity(city);
+                            setCityToggle(false);
+                          }}
+                          key={index}
+                          className={styles.listItem}
+                        >
+                          {city}
+                        </div>
+                      );
+                    })
+                  : null}
+              </div>
             </form>
           </span>
         </div>
         {/* mapping for the active array */}
-        {array.map((ride, index) => {
+        {activeArray.map((ride, index) => {
           return <RideCard props={ride} key={index} />;
         })}
       </div>

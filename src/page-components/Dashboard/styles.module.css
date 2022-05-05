@@ -67,14 +67,35 @@
 .filterActive {
   display: inline-block;
   width: 12rem;
-  height: 10rem;
+  height: 15rem;
   background-color: black;
   border-radius: 5px;
   position: absolute;
   right: 5rem;
   top: 10rem;
   z-index: 2;
+  overflow-y: auto;
 }
 .filterInactive {
   display: none;
+}
+.label {
+  padding: 1rem;
+  text-align: center;
+  background-color: #101010;
+  margin: 1rem;
+  border-radius: 5px;
+}
+.listActive {
+  height: 8rem;
+  overflow-y: scroll;
+  z-index: 4;
+}
+.listInactive {
+  display: none;
+}
+.listItem {
+  font-size: 14px;
+  text-align: center;
+  padding: 0.4rem;
 }
