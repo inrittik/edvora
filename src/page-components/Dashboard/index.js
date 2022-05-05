@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RideCard from "../../components/RideCard";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./styles.module.css";
 
 // Arbitrarily taken a date as the present date
@@ -8,7 +9,7 @@ let timeLimit = Math.floor(timeTo / 1000);
 
 // main functional component
 const Dashboard = ({ rides, user }) => {
-  // sorts the array of rides based on distance from the user's location
+  // sorts the array of rides based on distance from the user's location(`distance` property has been added in index page(getServerSideProps))
   rides.sort((a, b) => {
     return a.distance > b.distance ? 1 : -1;
   });
@@ -32,58 +33,63 @@ const Dashboard = ({ rides, user }) => {
     if (timeDiff < 0) upcomingRides.push(ride);
     else pastRides.push(ride);
   });
+  // categorization of rides ends
 
-  // state to manage active section i.e nearest(0)/upcoming(1)/past(2)
-  const [activeSection, setActiveSection] = useState(0);
-  const [activeCity, setActiveCity] = useState(null);
-  const [activeState, setActiveState] = useState(null);
-  const [activeFilter, setActiveFilter] = useState(false);
-  const [stateToggle, setStateToggle] = useState(false);
-  const [cityToggle, setCityToggle] = useState(false);
-  const [activeArray, setActiveArray] = useState([...rides]);
+  const [activeSection, setActiveSection] = useState(0); // state to manage active section i.e nearest(0)/upcoming(1)/past(2)
+  const [activeCity, setActiveCity] = useState(null); // state to handle filtered city
+  const [activeState, setActiveState] = useState(null); // state to handle filtered state
+  const [activeFilter, setActiveFilter] = useState(false); // state for filter component toggler
+  const [stateToggle, setStateToggle] = useState(false); // state for state(filter) toggler
+  const [cityToggle, setCityToggle] = useState(false); // state for city(filter) toggler
+  const [activeArray, setActiveArray] = useState([...rides]); // state for dtoring active/valid list of rides
 
-  // filters
-  // filter for state list
+  // get state list for all valid states present in the data
   let states = [];
   rides.forEach((ride) => {
     states.push(ride.state);
   });
-  const uniqueStates = [...new Set(states)];
-  uniqueStates.sort();
+  const uniqueStates = [...new Set(states)]; // get rid of duplicates
+  uniqueStates.sort(); // array sorted
 
-  // list of cities from a particular state
+  // get list of cities from a particular state(activeState)
   let cities = [];
-  const filterCities = (state) => {
+  const getCityList = (state) => {
     let ridesFromState = rides.filter((ride) => {
       return ride.state === state;
     });
     ridesFromState.forEach((ride) => {
       cities.push(ride.city);
     });
-    cities.sort();
+    cities.sort(); // array sorted
+    // function to remove duplicates inplace
     const removeDuplicates = (arr) => {
       return arr.filter((item, index) => arr.indexOf(item) === index);
     };
-    removeDuplicates(cities);
+    removeDuplicates(cities); // function call for removing duplicates
   };
 
-  // filtering of array of rides based on state abd city
+  // filtering of array of rides based on state abd city(runs when filtering is applied)
   useEffect(() => {
     if (activeState === null && activeCity === null) {
+      // filtering not yet applied
       setActiveArray(rides);
       return;
     }
     const filteredArray = rides.filter((ride) => {
       if (activeCity === null) {
+        // get valid rides when only state filter is applied
         return ride.state === activeState;
       } else {
+        // get valid rides when both state and city filters are applied
         return ride.state === activeState && ride.city === activeCity;
       }
     });
-    setActiveArray(filteredArray);
+    setActiveArray(filteredArray); // update state of active array to filtered rides
   }, [activeState, activeCity]);
+
   return (
     <>
+      {/* Header starts */}
       <header className={styles.header}>
         <span className={styles.title}>Edvora</span>
         <div className={styles.profile}>
@@ -91,6 +97,9 @@ const Dashboard = ({ rides, user }) => {
           <img src={user.url} alt="" />
         </div>
       </header>
+      {/* Header ends */}
+
+      {/* Main body starts */}
       <div className={styles.body}>
         <div className={styles.toggler}>
           <ul>
@@ -123,14 +132,16 @@ const Dashboard = ({ rides, user }) => {
             </li>
           </ul>
 
+          {/* Filter Component starts -> Due to lack of time, couldn't implement it as a seperate component*/}
           <span className={styles.filter}>
-            <span onClick={() => setActiveFilter(!activeFilter)}>Filters</span>
+            {/* Filter toggler */}
+            <span onClick={() => setActiveFilter(!activeFilter)}>Filter</span>
             <form
               className={
                 activeFilter ? styles.filterActive : styles.filterInactive
               }
             >
-              <div className={styles.label}>Filter</div>
+              <div className={styles.headLabel}>Filters</div>
               <div
                 className={styles.label}
                 onClick={() => setStateToggle(!stateToggle)}
@@ -142,13 +153,14 @@ const Dashboard = ({ rides, user }) => {
                   stateToggle ? styles.listActive : styles.listInactive
                 }
               >
+                {/* mapping list of valid states coming from the API */}
                 {uniqueStates.map((state, index) => {
                   return (
                     <div
                       onClick={() => {
-                        setActiveState(state);
-                        setActiveCity(null);
-                        setStateToggle(false);
+                        setActiveState(state); // state is selected
+                        setActiveCity(null); // active city is reset
+                        setStateToggle(false); // state toggle off
                       }}
                       key={index}
                       className={styles.listItem}
@@ -157,8 +169,10 @@ const Dashboard = ({ rides, user }) => {
                     </div>
                   );
                 })}
+                {/* mapping ends */}
               </div>
-              {activeState !== null ? filterCities(activeState) : null}
+              {/* call function to get list of cities in selected state */}
+              {activeState !== null ? getCityList(activeState) : null}
               <div
                 className={styles.label}
                 onClick={() => setCityToggle(!cityToggle)}
@@ -173,8 +187,8 @@ const Dashboard = ({ rides, user }) => {
                       return (
                         <div
                           onClick={() => {
-                            setActiveCity(city);
-                            setCityToggle(false);
+                            setActiveCity(city); //selct city
+                            setCityToggle(false); // city toggle off
                           }}
                           key={index}
                           className={styles.listItem}
@@ -187,12 +201,20 @@ const Dashboard = ({ rides, user }) => {
               </div>
             </form>
           </span>
+          {/* Filter component ends */}
         </div>
+
         {/* mapping for the active array */}
-        {activeArray.map((ride, index) => {
-          return <RideCard props={ride} key={index} />;
-        })}
+        <motion.div layout>
+          <AnimatePresence>
+            {activeArray.map((ride, index) => {
+              return <RideCard props={ride} key={index} />;
+            })}
+          </AnimatePresence>
+        </motion.div>
       </div>
+
+      {/* Main body ends */}
     </>
   );
 };

@@ -1,3 +1,4 @@
+/*header*/
 .header {
   width: 100vw;
   display: flex;
@@ -27,10 +28,14 @@
   border-radius: 50%;
   margin: 0 1rem;
 }
+
+/*main body*/
 .body {
-  min-height: 100vh;
+  min-height: 90vh;
   background: rgb(37, 37, 37);
+  padding: 1rem 0;
 }
+/*ride list toggler*/
 .toggler {
   padding: 1rem;
 }
@@ -55,6 +60,8 @@
   font-weight: 700;
   border-bottom: 2px solid white;
 }
+
+/*filter object*/
 .filter {
   color: white;
   font-family: Inter;
@@ -62,6 +69,8 @@
   font-size: 16px;
   text-align: right;
   width: 4rem;
+}
+.filter span {
   cursor: pointer;
 }
 .filterActive {
@@ -81,10 +90,19 @@
 }
 .label {
   padding: 1rem;
-  text-align: center;
+  text-align: left;
   background-color: #101010;
   margin: 1rem;
   border-radius: 5px;
+  cursor: pointer;
+}
+.headLabel {
+  padding: 1rem;
+  text-align: left;
+  background-color: black;
+  margin: 1rem;
+  border-bottom: 1px solid #cbcbcb;
+  color: rgba(165, 165, 165, 1);
 }
 .listActive {
   height: 8rem;
@@ -96,6 +114,46 @@
 }
 .listItem {
   font-size: 14px;
-  text-align: center;
+  text-align: left;
   padding: 0.4rem;
+  cursor: pointer;
+}
+@media screen and (max-width: 500px) {
+  .header {
+    padding: 1.4rem 0.8rem;
+  }
+  .profile {
+    font-size: 1rem;
+  }
+  .profile span {
+    margin: auto 0;
+  }
+  .profile img {
+    margin: 0 0.3rem;
+  }
+  .toggler {
+    padding: 0;
+  }
+  .toggler ul {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .toggler li {
+    padding: 0.1rem 0.5rem;
+    margin: 0;
+    font-size: 0.7rem;
+  }
+  .filter {
+    font-size: 0.8rem;
+    width: 4rem;
+    margin: 2rem;
+  }
+  .filterActive {
+    height: 12rem;
+  }
+  .label,
+  .headLabel {
+    padding: 0.5rem;
+  }
 }

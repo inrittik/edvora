@@ -1,3 +1,4 @@
+/*ride card styles*/
 .container {
   background: #171717;
   color: white;
@@ -45,4 +46,18 @@
   font-family: Inter;
   width: 10rem;
   text-align: center;
+}
+@media screen and (max-width: 500px) {
+  .container .image {
+    margin: auto 1rem;
+    left: 0;
+  }
+  .details ul {
+    font-size: 0.8rem;
+    position: relative;
+    left: 0;
+  }
+  .place {
+    display: none;
+  }
 }

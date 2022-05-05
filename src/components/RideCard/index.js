@@ -1,9 +1,16 @@
 import React from "react";
+import { motion } from "framer-motion";
 import styles from "./styles.module.css";
 
 const index = ({ props }) => {
   return (
-    <div className={styles.container}>
+    <motion.div
+      layout
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 1 }}
+      className={styles.container}
+    >
       <div className={styles.image}>
         <img src={props.map_url} alt="" />
       </div>
@@ -28,7 +35,7 @@ const index = ({ props }) => {
       </div>
       <div className={styles.place}>{props.city}</div>
       <div className={styles.place}>{props.state}</div>
-    </div>
+    </motion.div>
   );
 };
 
