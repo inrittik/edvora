@@ -144,6 +144,7 @@ const Dashboard = ({ rides, user }) => {
           {/* Filter Component starts -> Due to lack of time, couldn't implement it as a seperate component*/}
           <span className={styles.filter}>
             {/* Filter toggler */}
+            <div className={styles.icon}>&nbsp;</div>
             <span onClick={() => setActiveFilter(!activeFilter)}>Filter</span>
             <form
               className={
@@ -155,7 +156,12 @@ const Dashboard = ({ rides, user }) => {
                 className={styles.label}
                 onClick={() => setStateToggle(!stateToggle)}
               >
-                State
+                State{" "}
+                <div
+                  className={`${stateToggle ? styles.up : ""} ${styles.down}`}
+                >
+                  &nbsp;
+                </div>
               </div>
               <div
                 className={
@@ -186,7 +192,12 @@ const Dashboard = ({ rides, user }) => {
                 className={styles.label}
                 onClick={() => setCityToggle(!cityToggle)}
               >
-                City
+                City{" "}
+                <div
+                  className={`${cityToggle ? styles.up : ""} ${styles.down}`}
+                >
+                  &nbsp;
+                </div>
               </div>
               <div
                 className={cityToggle ? styles.listActive : styles.listInactive}

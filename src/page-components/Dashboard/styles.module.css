@@ -84,6 +84,7 @@
   top: 10rem;
   z-index: 2;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .filterInactive {
   display: none;
@@ -117,6 +118,69 @@
   text-align: left;
   padding: 0.4rem;
   cursor: pointer;
+  width: 90%;
+  margin: auto;
+}
+.listItem:hover {
+  background-color: rgb(131, 131, 246);
+}
+.icon {
+  position: relative;
+  left: -2rem;
+  top: 0.5rem;
+}
+.icon,
+.icon::before,
+.icon::after {
+  width: 0.8rem;
+  height: 2px;
+  background-color: white;
+  display: inline-block;
+}
+.icon::before,
+.icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  transition: all 0.2s;
+}
+.icon::before {
+  width: 1.2rem;
+  top: -0.4rem;
+}
+.icon::after {
+  width: 0.5rem;
+  top: 0.4rem;
+}
+.down {
+  position: relative;
+  left: 6rem;
+  top: -1.5rem;
+}
+.down::before,
+.down::after {
+  width: 0.9rem;
+  height: 2px;
+  background-color: rgba(165, 165, 165, 1);
+  display: inline-block;
+  content: "";
+  transition: all 0.2s;
+}
+.down::before {
+  transform: rotateZ(45deg);
+  position: relative;
+  left: 0.3rem;
+}
+.down::after {
+  transform: rotateZ(-45deg);
+  position: relative;
+  right: 0.3rem;
+}
+.up::before {
+  transform: rotateZ(-45deg);
+}
+.up::after {
+  transform: rotateZ(45deg);
 }
 @media screen and (max-width: 500px) {
   .header {
@@ -144,13 +208,24 @@
     margin: 0;
     font-size: 0.7rem;
   }
+  .icon {
+    left: 0.5rem;
+  }
   .filter {
     font-size: 0.8rem;
     width: 4rem;
     margin: 2rem;
+    position: relative;
+    top: 0.5rem;
+  }
+  .filter span {
+    position: relative;
+    left: 1rem;
   }
   .filterActive {
     height: 12rem;
+    left: 5rem;
+    top: 0;
   }
   .label,
   .headLabel {
