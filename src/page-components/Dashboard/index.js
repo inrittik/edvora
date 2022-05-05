@@ -11,7 +11,16 @@ let timeLimit = Math.floor(timeTo / 1000);
 const Dashboard = ({ rides, user }) => {
   // sorts the array of rides based on distance from the user's location(`distance` property has been added in index page(getServerSideProps))
   rides.sort((a, b) => {
-    return a.distance > b.distance ? 1 : -1;
+    if (a.distance > b.distance) {
+      return 1;
+    } else if (a.distance === b.distance) {
+      if (a.origin_station_code > b.origin_station_code) {
+        return 1;
+      } else if (a.origin_station_code == b.origin_station_code) {
+        if (a.id > b.id) return 1;
+        else return -1;
+      } else return -1;
+    } else return -1;
   });
 
   // seperate arrays to store upcoming and past rides seperately
@@ -36,8 +45,8 @@ const Dashboard = ({ rides, user }) => {
   // categorization of rides ends
 
   const [activeSection, setActiveSection] = useState(0); // state to manage active section i.e nearest(0)/upcoming(1)/past(2)
-  const [activeCity, setActiveCity] = useState(null); // state to handle filtered city
-  const [activeState, setActiveState] = useState(null); // state to handle filtered state
+  const [activeCity, setActiveCity] = useState(""); // state to handle filtered city
+  const [activeState, setActiveState] = useState(""); // state to handle filtered state
   const [activeFilter, setActiveFilter] = useState(false); // state for filter component toggler
   const [stateToggle, setStateToggle] = useState(false); // state for state(filter) toggler
   const [cityToggle, setCityToggle] = useState(false); // state for city(filter) toggler
@@ -70,13 +79,13 @@ const Dashboard = ({ rides, user }) => {
 
   // filtering of array of rides based on state abd city(runs when filtering is applied)
   useEffect(() => {
-    if (activeState === null && activeCity === null) {
+    if (activeState === "" && activeCity === "") {
       // filtering not yet applied
       setActiveArray(rides);
       return;
     }
     const filteredArray = rides.filter((ride) => {
-      if (activeCity === null) {
+      if (activeCity === "") {
         // get valid rides when only state filter is applied
         return ride.state === activeState;
       } else {
@@ -159,7 +168,7 @@ const Dashboard = ({ rides, user }) => {
                     <div
                       onClick={() => {
                         setActiveState(state); // state is selected
-                        setActiveCity(null); // active city is reset
+                        setActiveCity(""); // active city is reset
                         setStateToggle(false); // state toggle off
                       }}
                       key={index}
@@ -172,7 +181,7 @@ const Dashboard = ({ rides, user }) => {
                 {/* mapping ends */}
               </div>
               {/* call function to get list of cities in selected state */}
-              {activeState !== null ? getCityList(activeState) : null}
+              {activeState !== "" ? getCityList(activeState) : ""}
               <div
                 className={styles.label}
                 onClick={() => setCityToggle(!cityToggle)}
@@ -182,7 +191,7 @@ const Dashboard = ({ rides, user }) => {
               <div
                 className={cityToggle ? styles.listActive : styles.listInactive}
               >
-                {activeState !== null
+                {activeState !== ""
                   ? cities.map((city, index) => {
                       return (
                         <div
